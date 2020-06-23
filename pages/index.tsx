@@ -1,5 +1,5 @@
 import React from 'react';
-import METADATA from '../metadata.json';
+import METADATA from 'metadata.json';
 import Head from 'next/head';
 
 const IndexPage: React.FC = () => {
