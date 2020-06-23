@@ -14,11 +14,12 @@ export default PostPage;
 Server-side Block 입니다
 */
 
+const markdownRegex = new RegExp(/\.mdx?$/);
 const removeMarkdownExtension = ({ name: fileName }) =>
-  fileName.replace(/.mdx?/, '');
+  fileName.replace(markdownRegex, '');
 const isDirectory = (dirent: fs.Dirent) => dirent.isDirectory();
 const isMarkdown = (dirent: fs.Dirent) =>
-  dirent.isFile() && dirent.name.endsWith('.md');
+  dirent.isFile() && markdownRegex.test(dirent.name);
 const convertToPath = (paramName: string) => (slug: string) => ({
   params: {
     [paramName]: slug,
