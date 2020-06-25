@@ -36,11 +36,11 @@ const getCode = (node: rehypeNode): string => {
 };
 
 const setCode = (node: rehypeNode, code: string): void => {
-  const fragmanet = unified()
+  const fragment = unified()
     .use(rehypeParse, { fragment: true })
     .parse(code) as rehypeNode;
 
-  node.children = [...fragmanet.children];
+  node.children = [...fragment.children];
 };
 
 const nodeEditor = (node: rehypeNode) => {
