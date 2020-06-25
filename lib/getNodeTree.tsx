@@ -23,10 +23,17 @@ interface FileNode {
   children?: FileNode[];
 }
 
-export async function getNodeTree(
-  nodePath: string,
+interface getNodeTreeProps {
+  nodePath: string;
+  postStore?: FileNode[];
+  isFile?: boolean;
+}
+
+export async function getNodeTree({
+  nodePath,
+  postStore,
   isFile = false,
-): Promise<FileNode> {
+}: getNodeTreeProps): Promise<FileNode> {
   const nodeName = path.basename(nodePath);
 
   const newNode: FileNode = {
@@ -38,13 +45,14 @@ export async function getNodeTree(
     path: nodePath,
   };
 
-  if (!isFile) {
-    newNode.children = [];
-  } else {
+  if (isFile) {
     newNode.postData = await parsePost(nodePath, newNode.slug);
+    postStore.push(newNode);
+
+    return newNode;
   }
 
-  if (isFile) return newNode;
+  newNode.children = [];
 
   const nodeList = await fsPromise.readdir(nodePath, { withFileTypes: true });
   if (!nodeList.length) return newNode;
@@ -53,9 +61,17 @@ export async function getNodeTree(
     const newPath = `${nodePath}/${node.name}`;
 
     if (isDirectory(node)) {
-      newNode.children.push(await getNodeTree(newPath));
+      newNode.children.push(
+        await getNodeTree({ nodePath: newPath, postStore }),
+      );
     } else if (isMarkdown(node)) {
-      newNode.children.push(await getNodeTree(newPath, true));
+      newNode.children.push(
+        await getNodeTree({
+          nodePath: newPath,
+          isFile: true,
+          postStore,
+        }),
+      );
     }
   }
 

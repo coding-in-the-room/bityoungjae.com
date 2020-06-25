@@ -11,11 +11,15 @@ const snapshotPath = path.resolve(
 
 test('getNodeTree', async () => {
   const rootDir = path.resolve(process.cwd(), './tests/testPosts');
-  const fileTree = await getNodeTree(rootDir);
+  const postStore = [];
+  const fileTree = await getNodeTree({
+    nodePath: rootDir,
+    postStore,
+  });
   const stringifiedTree = JSON.stringify(fileTree, null, 2);
   const json = JSON.parse(stringifiedTree);
 
-  expect(isEqual(snapshot, json)).toBe(true);
-
   // await fs.promises.writeFile(snapshotPath, stringifiedTree);
+
+  expect(isEqual(snapshot, json)).toBe(true);
 });
