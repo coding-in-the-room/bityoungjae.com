@@ -1,7 +1,8 @@
 import type { Node } from 'unist';
 import visit from 'unist-util-visit';
 import Prism from 'prismjs';
-
+import unified from 'unified';
+import rehypeParse from 'rehype-parse';
 interface rehypeNode extends Node {
   tagName: string;
   properties: {
@@ -23,18 +24,23 @@ const getLanguage = (node: rehypeNode) => {
   return language;
 };
 
-const getCode = (node: rehypeNode) => {
-  if (!node.children || !node.children.length) return '';
-  if (node.children[0].type !== 'text' || !node.children[0].value) return '';
+const checkCode = (node: rehypeNode): boolean => {
+  if (!node.children || !node.children.length) return false;
+  if (node.children[0].type !== 'text' || !node.children[0].value) return false;
 
-  return node.children[0].value;
+  return true;
 };
 
-const setCode = (node: rehypeNode, code: string) => {
-  if (!node.children || !node.children.length) return '';
-  if (node.children[0].type !== 'text' || !node.children[0].value) return '';
+const getCode = (node: rehypeNode): string => {
+  return checkCode(node) ? node.children[0].value : '';
+};
 
-  node.children[0].value = code;
+const setCode = (node: rehypeNode, code: string): void => {
+  const fragmanet = unified()
+    .use(rehypeParse, { fragment: true })
+    .parse(code) as rehypeNode;
+
+  node.children = [...fragmanet.children];
 };
 
 const nodeEditor = (node: rehypeNode) => {
