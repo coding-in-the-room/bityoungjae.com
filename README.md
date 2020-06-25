@@ -12,7 +12,7 @@
 - 간단한 형태의 slugify 모듈 제작함.
 - lib/getNodeTree.tsx 구현 완료
   - posts 폴더를 스캔하여 하부 디렉터리를 카테고리로 하위 마크다운 파일을 포스트로 하는 트리를 생성한다.
-  - [스냅샷 링크]('./blob/develop/tests/testPosts.snapshot.json')
+  - [스냅샷 링크](tests/testPosts.snapshot.json)
 
 ### 2020-06-24
 
