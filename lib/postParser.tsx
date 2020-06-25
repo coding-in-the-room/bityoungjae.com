@@ -14,7 +14,6 @@ const fsPromise = fs.promises;
 export interface PostData {
   slug: string;
   title: string;
-  category: string;
   tags: string[];
   html: string;
   date: Date;
@@ -24,7 +23,7 @@ export const parsePost = async (filePath: string, slug: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
   const {
-    data: { title = '', date = new Date(), tags = [], category = '' },
+    data: { title = '', date = new Date(0), tags = [], category = '' },
     content = '',
   } = matter(rawText);
 
@@ -34,7 +33,6 @@ export const parsePost = async (filePath: string, slug: string) => {
     slug,
     title,
     tags,
-    category,
     date: new Date(date),
     html,
   };
