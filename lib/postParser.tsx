@@ -3,6 +3,7 @@ import matter from 'gray-matter';
 import unified from 'unified';
 import remark from 'remark-parse';
 import remark2rehype from 'remark-rehype';
+import rehypeSlug from 'rehype-slug';
 import rehypeHtml from 'rehype-stringify';
 import rehypePrism from './rehype-prism';
 import rehypeSanitize from 'rehype-sanitize';
@@ -46,8 +47,11 @@ export const markdownToHTML = async (markdown: string) => {
     .use(remark)
     .use(remark2rehype)
     .use(rehypeSanitize, sanitizeSchema)
-    .use(rehypeHtml)
-    .use(rehypePrism);
+    .use(rehypeSlug)
+    .use(rehypePrism)
+    .use(rehypeHtml, {
+      collapseEmptyAttributes: true,
+    });
 
   const parsedData = await parser.process(markdown);
   const html = parsedData.contents.toString();
