@@ -41,6 +41,27 @@
             "date": "2020-06-23T00:00:00.000Z",
             "html": "<h2 id=\"웃기는-소리하네\">웃기는 소리하네</h2>\n<p>그런 웃기는 소리하지마쇼.</p>"
           }
+        },
+        {
+          "type": "category",
+          "name": "특별 시리즈",
+          "slug": "특별-시리즈",
+          "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Javascript/특별 시리즈",
+          "children": [
+            {
+              "type": "post",
+              "name": "자바스크립트의 모든 것 1탄.md",
+              "slug": "자바스크립트의-모든-것-1탄",
+              "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Javascript/특별 시리즈/자바스크립트의 모든 것 1탄.md",
+              "postData": {
+                "slug": "자바스크립트의-모든-것-1탄",
+                "title": "",
+                "tags": [],
+                "date": "1970-01-01T00:00:00.000Z",
+                "html": ""
+              }
+            }
+          ]
         }
       ]
     },
@@ -57,10 +78,13 @@
           "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/React/행복합니다 정말이요.md",
           "postData": {
             "slug": "행복합니다-정말이요",
-            "title": "",
-            "tags": [],
-            "date": "1970-01-01T00:00:00.000Z",
-            "html": ""
+            "title": "정말 행복하시나요",
+            "tags": [
+              "행복에대하여",
+              "잡념"
+            ],
+            "date": "2020-06-27T00:00:00.000Z",
+            "html": "<h2 id=\"안녕하세요\">안녕하세요</h2>\n<p>정말 <code>반갑</code> 습니다!</p>"
           }
         }
       ]
@@ -78,10 +102,13 @@
           "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Redux/사랑해요 헬지.md",
           "postData": {
             "slug": "사랑해요-헬지",
-            "title": "",
-            "tags": [],
-            "date": "1970-01-01T00:00:00.000Z",
-            "html": ""
+            "title": "정말 행복하시나요",
+            "tags": [
+              "행복에대하여",
+              "잡념"
+            ],
+            "date": "2020-06-27T00:00:00.000Z",
+            "html": "<h2 id=\"안녕하세요\">안녕하세요</h2>\n<p>정말 <code>반갑</code> 습니다!</p>"
           }
         }
       ]
