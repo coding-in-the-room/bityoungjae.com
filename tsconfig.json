@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@atom/*": ["components/atom/*"],
-      "@layout/*": ["components/layout/*"]
+      "@layout/*": ["components/layout/*"],
+      "@lib/*": ["lib/*"]
     }
   },
   "exclude": ["node_modules"],
