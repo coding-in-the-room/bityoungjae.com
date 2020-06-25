@@ -1,0 +1,90 @@
+{
+  "type": "category",
+  "name": "testPosts",
+  "slug": "testposts",
+  "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts",
+  "children": [
+    {
+      "type": "category",
+      "name": "Javascript",
+      "slug": "javascript",
+      "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Javascript",
+      "children": [
+        {
+          "type": "post",
+          "name": "객체에 대하여.md",
+          "slug": "객체에-대하여",
+          "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Javascript/객체에 대하여.md",
+          "postData": {
+            "slug": "객체에-대하여",
+            "title": "객체에 대하여 알아봅시다",
+            "tags": [
+              "객체",
+              "오브제엑트"
+            ],
+            "date": "2020-06-23T00:00:00.000Z",
+            "html": "<h2 id=\"형태\">형태</h2>\n<pre><code class=\"language-js\"><span class=\"token keyword\">const</span> object <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  abc<span class=\"token operator\">:</span> <span class=\"token number\">333</span><span class=\"token punctuation\">;</span>\n<span class=\"token punctuation\">}</span>\n</code></pre>"
+          }
+        },
+        {
+          "type": "post",
+          "name": "자바스크립트 개껌이지!!!  😄.md",
+          "slug": "자바스크립트-개껌이지",
+          "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Javascript/자바스크립트 개껌이지!!!  😄.md",
+          "postData": {
+            "slug": "자바스크립트-개껌이지",
+            "title": "개껌이라니까?",
+            "tags": [
+              "개소리",
+              "삽소리"
+            ],
+            "date": "2020-06-23T00:00:00.000Z",
+            "html": "<h2 id=\"웃기는-소리하네\">웃기는 소리하네</h2>\n<p>그런 웃기는 소리하지마쇼.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "React",
+      "slug": "react",
+      "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/React",
+      "children": [
+        {
+          "type": "post",
+          "name": "행복합니다 정말이요.md",
+          "slug": "행복합니다-정말이요",
+          "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/React/행복합니다 정말이요.md",
+          "postData": {
+            "slug": "행복합니다-정말이요",
+            "title": "",
+            "tags": [],
+            "date": "1970-01-01T00:00:00.000Z",
+            "html": ""
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "Redux",
+      "slug": "redux",
+      "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Redux",
+      "children": [
+        {
+          "type": "post",
+          "name": "사랑해요 헬지.md",
+          "slug": "사랑해요-헬지",
+          "path": "/Users/youngjaejoo/WorkSpaces/Projects/bityoungjae-blog/tests/testPosts/Redux/사랑해요 헬지.md",
+          "postData": {
+            "slug": "사랑해요-헬지",
+            "title": "",
+            "tags": [],
+            "date": "1970-01-01T00:00:00.000Z",
+            "html": ""
+          }
+        }
+      ]
+    }
+  ]
+}
