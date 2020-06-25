@@ -6,7 +6,7 @@
 
 ### 2020-06-25
 
-- rhype용 prism.js 플러그인 제작함
+- rehype용 prism.js 플러그인 제작함
   - prism.js로 하이라이트된 코드를 정적 생성하기 위한 플러그인임.
 - postParser 초기 구현 완료
 - 간단한 형태의 slugify 모듈 제작함.
