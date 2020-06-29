@@ -4,6 +4,14 @@
 
 ## 주요 기록
 
+### 2020-06-29
+
+- postStore 초안 구현완료
+  - getCategoriesPath 함수
+    - next.js에서 category 관련 path를 생성하기 위한 목적.
+  - getPostsByCategories 함수
+    - 카테고리 배열로부터 해당 카테고리에 속한 포스트들을 가져오기 위한 목적.
+
 ### 2020-06-25
 
 - rehype용 prism.js 플러그인 제작함
