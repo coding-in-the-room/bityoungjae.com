@@ -16,14 +16,19 @@ export interface PostData {
   title: string;
   tags: string[];
   html: string;
-  date: Date;
+  date: string;
 }
 
 export const parsePost = async (filePath: string, slug: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
   const {
-    data: { title = '', date = new Date(0), tags = [], category = '' },
+    data: {
+      title = '',
+      date = new Date(0).toString(),
+      tags = [],
+      category = '',
+    },
     content = '',
   } = matter(rawText);
 
@@ -33,7 +38,7 @@ export const parsePost = async (filePath: string, slug: string) => {
     slug,
     title,
     tags,
-    date: new Date(date),
+    date: new Date(date).toString(),
     html,
   };
 
