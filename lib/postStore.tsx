@@ -4,7 +4,7 @@ import { getNodeTree, FileNode } from './getNodeTree';
 
 interface Path {
   params: {
-    [paramName: string]: string;
+    [paramName: string]: string | string[];
   };
 }
 
@@ -12,7 +12,7 @@ interface PostStoreProps {
   rootDir: string;
 }
 
-const convertToPath = (paramName: string) => (slug: string) => ({
+const convertToPath = (paramName: string) => (slug: string | string[]) => ({
   params: {
     [paramName]: slug,
   },
@@ -24,6 +24,7 @@ interface PostStore {
   postNodes: FileNode[];
   posts: PostData[];
   postPathList: Path[];
+  categoriesPathList: Path[];
   shouldUpdate: boolean;
 }
 
@@ -48,6 +49,10 @@ export const getStore = async (options: PostStoreProps) => {
   store.postPathList = store.posts.map(({ slug }) =>
     convertToPath('slug')(slug),
   );
+
+  store.categoriesPathList = getCategoriesPaths(
+    store.rootNode,
+  ).map((categoryPath) => convertToPath('slug')(categoryPath));
 
   store.shouldUpdate = false;
 
@@ -93,7 +98,7 @@ export const getCategoriesPaths = (
   rootNode: FileNode,
   parents: string[] = [],
 ) => {
-  const result: any = [];
+  const result: string[][] = [];
 
   if (parents.length) result.push(parents);
 
