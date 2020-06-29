@@ -6,6 +6,11 @@
 
 ### 2020-06-29
 
+- 트리 탐색을 위한 헬퍼 함수들 작성함.
+  - visit.tsx
+    - visit 함수
+    - findNode 함수
+    - findeNodeAll 함수
 - postStore 초안 구현완료
   - getCategoriesPath 함수
     - next.js에서 category 관련 path를 생성하기 위한 목적.
