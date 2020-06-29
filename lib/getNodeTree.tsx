@@ -14,7 +14,7 @@ const isMarkdown = (dirent: fs.Dirent) =>
 const removeMarkdownExtension = (name: string) =>
   name.replace(markdownRegex, '');
 
-interface FileNode {
+export interface FileNode {
   type: 'category' | 'post';
   name: string;
   slug: string;
