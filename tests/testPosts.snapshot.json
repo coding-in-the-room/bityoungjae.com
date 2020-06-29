@@ -22,7 +22,7 @@
               "객체",
               "오브제엑트"
             ],
-            "date": "2020-06-23T00:00:00.000Z",
+            "date": "Tue Jun 23 2020 09:00:00 GMT+0900 (대한민국 표준시)",
             "html": "<h2 id=\"형태\">형태</h2>\n<pre><code class=\"language-js\"><span class=\"token keyword\">const</span> object <span class=\"token operator\">=</span> <span class=\"token punctuation\">{</span>\n  abc<span class=\"token operator\">:</span> <span class=\"token number\">333</span><span class=\"token punctuation\">;</span>\n<span class=\"token punctuation\">}</span>\n</code></pre>"
           }
         },
@@ -38,7 +38,7 @@
               "개소리",
               "삽소리"
             ],
-            "date": "2020-06-23T00:00:00.000Z",
+            "date": "Tue Jun 23 2020 09:00:00 GMT+0900 (대한민국 표준시)",
             "html": "<h2 id=\"웃기는-소리하네\">웃기는 소리하네</h2>\n<p>그런 웃기는 소리하지마쇼.</p>"
           }
         },
@@ -61,7 +61,7 @@
                   "모든 것",
                   "총집편"
                 ],
-                "date": "2020-06-22T00:00:00.000Z",
+                "date": "Mon Jun 22 2020 09:00:00 GMT+0900 (대한민국 표준시)",
                 "html": "<h2 id=\"슬러기파이에-대해-알아보자\">슬러기파이에 대해 알아보자</h2>\n<pre><code class=\"language-js\"><span class=\"token keyword\">const</span> spaceRegex <span class=\"token operator\">=</span> <span class=\"token regex\">/\\s+/g</span><span class=\"token punctuation\">;</span>\n<span class=\"token keyword\">const</span> nonAllowedRegex <span class=\"token operator\">=</span> <span class=\"token regex\">/[^가-힇a-z\\d\\s\\.\\-]/gi</span><span class=\"token punctuation\">;</span>\n\n<span class=\"token keyword\">const</span> slugify <span class=\"token operator\">=</span> <span class=\"token punctuation\">(</span>name<span class=\"token operator\">:</span> string<span class=\"token punctuation\">,</span> delimeter <span class=\"token operator\">=</span> <span class=\"token string\">'-'</span><span class=\"token punctuation\">)</span> <span class=\"token operator\">=></span> <span class=\"token punctuation\">{</span>\n  <span class=\"token keyword\">const</span> result <span class=\"token operator\">=</span> name\n    <span class=\"token punctuation\">.</span><span class=\"token function\">replace</span><span class=\"token punctuation\">(</span>nonAllowedRegex<span class=\"token punctuation\">,</span> <span class=\"token string\">''</span><span class=\"token punctuation\">)</span>\n    <span class=\"token punctuation\">.</span><span class=\"token function\">trim</span><span class=\"token punctuation\">(</span><span class=\"token punctuation\">)</span>\n    <span class=\"token punctuation\">.</span><span class=\"token function\">replace</span><span class=\"token punctuation\">(</span>spaceRegex<span class=\"token punctuation\">,</span> delimeter<span class=\"token punctuation\">)</span>\n    <span class=\"token punctuation\">.</span><span class=\"token function\">toLowerCase</span><span class=\"token punctuation\">(</span><span class=\"token punctuation\">)</span><span class=\"token punctuation\">;</span>\n\n  <span class=\"token keyword\">return</span> result<span class=\"token punctuation\">;</span>\n<span class=\"token punctuation\">}</span><span class=\"token punctuation\">;</span>\n\n<span class=\"token keyword\">export</span> <span class=\"token punctuation\">{</span> slugify <span class=\"token punctuation\">}</span><span class=\"token punctuation\">;</span>\n\n</code></pre>"
               }
             }
@@ -87,7 +87,7 @@
               "행복에대하여",
               "잡념"
             ],
-            "date": "2020-06-27T00:00:00.000Z",
+            "date": "Sat Jun 27 2020 09:00:00 GMT+0900 (대한민국 표준시)",
             "html": "<h2 id=\"안녕하세요\">안녕하세요</h2>\n<p>정말 <code>반갑</code> 습니다!</p>"
           }
         }
@@ -111,7 +111,7 @@
               "행복에대하여",
               "잡념"
             ],
-            "date": "2020-06-27T00:00:00.000Z",
+            "date": "Sat Jun 27 2020 09:00:00 GMT+0900 (대한민국 표준시)",
             "html": "<h2 id=\"안녕하세요\">안녕하세요</h2>\n<p>정말 <code>반갑</code> 습니다!</p>"
           }
         }
