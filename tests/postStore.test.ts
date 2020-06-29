@@ -15,6 +15,8 @@ test('getCategoriesPaths', async () => {
     ['javascript'],
     ['javascript', '특별-시리즈'],
     ['react'],
+    ['react', '꿀팁-정리'],
+    ['react', '리액트-핵심정리'],
     ['redux'],
   ];
 
