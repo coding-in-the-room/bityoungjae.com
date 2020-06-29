@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { PostData, parsePost } from './postParser';
-import { slugify } from '../lib/slugify';
+import { slugify } from './utils/slugify';
 
 const fsPromise = fs.promises;
 const markdownRegex = new RegExp(/\.mdx?$/);

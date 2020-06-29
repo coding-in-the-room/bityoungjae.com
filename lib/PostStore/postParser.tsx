@@ -5,9 +5,9 @@ import remark from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
 import rehypeHtml from 'rehype-stringify';
-import rehypePrism from './rehype-prism';
+import rehypePrism from './utils/rehype-prism';
 import rehypeSanitize from 'rehype-sanitize';
-import sanitizeSchema from './sanitizeSchema.json';
+import sanitizeSchema from './utils/sanitizeSchema.json';
 
 const fsPromise = fs.promises;
 

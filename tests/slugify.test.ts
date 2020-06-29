@@ -1,4 +1,4 @@
-import { slugify } from '../lib/slugify';
+import { slugify } from '../lib/PostStore/utils/slugify';
 
 test('slugify test', () => {
   expect(slugify('반가운 얼굴들 안녕')).toBe('반가운-얼굴들-안녕');

@@ -3,7 +3,7 @@ import {
   getCategoriesPaths,
   getPostsByCategories,
   getPostBySlug,
-} from '../lib/postStore';
+} from '../lib/PostStore/postStore';
 import isEqual from 'lodash.isequal';
 import { testPath } from './env';
 

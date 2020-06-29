@@ -1,5 +1,5 @@
 // import fs from 'fs';
-import { getNodeTree } from '../lib/getNodeTree';
+import { getNodeTree } from '../lib/PostStore/getNodeTree';
 import snapshot from './testPosts.snapshot.json';
 import isEqual from 'lodash.isequal';
 import path from 'path';

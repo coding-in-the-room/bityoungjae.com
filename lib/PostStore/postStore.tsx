@@ -1,6 +1,12 @@
 import type { PostData } from './postParser';
-import { findNode, findNodeAll, visit } from './visit';
+import { findNode, findNodeAll } from './utils/visit';
 import { getNodeTree, FileNode } from './getNodeTree';
+import {
+  convertToPath,
+  findCategory,
+  isCategory,
+  isPost,
+} from './utils/postStoreHelper';
 
 interface Path {
   params: {
@@ -11,12 +17,6 @@ interface Path {
 interface PostStoreProps {
   rootDir: string;
 }
-
-const convertToPath = (paramName: string) => (slug: string | string[]) => ({
-  params: {
-    [paramName]: slug,
-  },
-});
 
 interface PostStore {
   rootDir: string;
@@ -46,6 +46,9 @@ export const getStore = async (options: PostStoreProps) => {
 
   store.posts = store.postNodes.map((node) => node.postData);
 
+  /*
+   * Path 리스트 관련 초기화 부
+   */
   store.postPathList = store.posts.map(({ slug }) =>
     convertToPath('slug')(slug),
   );
@@ -55,18 +58,7 @@ export const getStore = async (options: PostStoreProps) => {
   ).map((categoryPath) => convertToPath('slug')(categoryPath));
 
   store.shouldUpdate = false;
-
   return store;
-};
-
-const isCategory = (node: FileNode) => node.type === 'category';
-const isPost = (node: FileNode) => node.type === 'post';
-
-export const getCategoryBySlug = (slug: string) => {
-  return findNode(
-    store.rootNode,
-    (node) => isCategory(node) && node.slug === slug,
-  );
 };
 
 export const getPostBySlug = (rootNode: FileNode, slug: string): FileNode => {
@@ -81,16 +73,6 @@ export const getPostsByCategories = (
   const posts = findNodeAll(categoryNode, isPost);
 
   return posts;
-};
-
-const findCategory = (rootNode: FileNode, categories: string[]) => {
-  let now: FileNode = rootNode;
-
-  for (const category of categories) {
-    now = findNode(now, (node) => isCategory(node) && node.slug === category);
-  }
-
-  return now;
 };
 
 // 디렉터리 계층구조 중 next.js에 사용될 카테고리 path만 추출.
