@@ -23,7 +23,7 @@ export const parsePost = async (filePath: string, slug: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
   const {
-    data: { title = '', date = '', tags = [] },
+    data: { title = '', date, tags = [] },
     content = '',
   } = matter(rawText);
 
@@ -33,7 +33,7 @@ export const parsePost = async (filePath: string, slug: string) => {
     slug,
     title,
     tags,
-    date,
+    date: date.toString(),
     html,
   };
 
