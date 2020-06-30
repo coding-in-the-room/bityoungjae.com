@@ -14,8 +14,12 @@
 - 테스트 개선
   - 스냅샷 테스트를 별도의 유틸로 분리함.
   - store.propList 및 getNodeTree 스냅샷 테스트 추가
-    - [propList 스냅샷 링크](tests/snapshot/propList.snapshot.json)
     - [getNodeTree 스냅샷 링크](tests/snapshot/fileTree.snapshot.json)
+    - [propList.global 스냅샷 링크](tests/snapshot/propList.global.snapshot.json)
+    - [propList.category 스냅샷 링크](tests/snapshot/propList.category.snapshot.json)
+    - [propList.tag 스냅샷 링크](tests/snapshot/propList.tag.snapshot.json)
+    - [propList.page 스냅샷 링크](tests/snapshot/propList.page.snapshot.json)
+    - [propList.post 스냅샷 링크](tests/snapshot/propList.post.snapshot.json)
 
 ### 2020-06-30
 
