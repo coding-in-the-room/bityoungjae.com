@@ -9,7 +9,7 @@ import {
 } from './common';
 import { findNodeAll } from './utils/visit';
 
-interface Path {
+export interface Path {
   params: {
     [paramName: string]: string | string[];
   };
