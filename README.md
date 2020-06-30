@@ -4,6 +4,19 @@
 
 ## 주요 기록
 
+### 2020-07-01
+
+- store 생성 과정에서 postData에 대한 확장을 진행.
+- store를 통해 생성된 propList.post의 경우 반환하는 postData에 대해 아래의 추가적인 확장 정보를 갖는다.
+  - relatedPosts -> 카테고리 단위의 연관 게시물 목록
+  - prevPost, nextPost -> 각각 카테고리 단위로 이전과 이후의 게시물의 slug를 가르킨다.
+  - categories -> 최하위 카테고리가 배열 형태로 저장된다. ex : `['javascript', '특별-시리즈']`
+- 테스트 개선
+  - 스냅샷 테스트를 별도의 유틸로 분리함.
+  - store.propList 및 getNodeTree 스냅샷 테스트 추가
+    - [propList 스냅샷 링크](tests/snapshot/propList.snapshot.json)
+    - [getNodeTree 스냅샷 링크](tests/snapshot/fileTree.snapshot.json)
+
 ### 2020-06-30
 
 - postStore 구조 정립 및 하기 내용 구현완료
@@ -16,6 +29,7 @@
     - store.propList.category -> getStaticProps에 사용될 category의 prop list
     - store.propList.tag -> getStaticProps에 사용될 tag prop list
     - store.propList.page -> getStaticProps에 사용될 page prop list
+    - store.propList.post -> getStaticProps에 사용될 post prop list
   - store.propList.global -> 각종 전역 데이터
     - store.propList.global.postCount -> 전체 게시물 갯수
     - store.propList.global.categoryCount -> 전체 category 갯수
@@ -43,7 +57,7 @@
 - lib/getNodeTree.tsx 구현 완료
   - posts 폴더를 스캔하여 하부 디렉터리를 카테고리로 하위 마크다운 파일을 포스트로 하는 트리를 생성한다.
   - [테스트 디렉터리](tests/testPosts)
-  - [스냅샷 링크](tests/testPosts.snapshot.json)
+  - [스냅샷 링크](tests/snapshot/fileTree.snapshot.json)
 
 ### 2020-06-24
 
