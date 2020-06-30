@@ -4,6 +4,23 @@
 
 ## 주요 기록
 
+### 2020-06-30
+
+- postStore 구조 정립 및 하기 내용 구현완료
+  - store.pathList
+    - store.pathList.post -> getStaticPaths에 사용될 게시물 path list
+    - store.pathList.category -> getStaticPaths에 사용될 category의 path list
+    - store.pathList.tag -> getStaticPaths에 사용될 tag path list
+    - store.pathList.page -> getStaticPaths에 사용될 page path list
+  - store.propList
+    - store.propList.category -> getStaticProps에 사용될 category의 prop list
+    - store.propList.tag -> getStaticProps에 사용될 tag prop list
+    - store.propList.page -> getStaticProps에 사용될 page prop list
+  - store.propList.global -> 각종 전역 데이터
+    - store.propList.global.postCount -> 전체 게시물 갯수
+    - store.propList.global.categoryCount -> 전체 category 갯수
+    - store.propList.global.tagCount -> 전체 tag 갯수
+
 ### 2020-06-29
 
 - 트리 탐색을 위한 헬퍼 함수들 작성함.
