@@ -1,5 +1,5 @@
 import { getNodeTree, FileNode } from './utils/getNodeTree';
-import { StoreMeta, getMetaData } from './metaParser';
+import { PropList, getMetaData } from './metaParser';
 import { PathList, getPathList } from './pathParser';
 import { PageSlug } from './common';
 
@@ -12,7 +12,7 @@ interface PostStore {
   shouldUpdate: boolean;
   rootDir?: string;
   rootNode?: FileNode;
-  meta?: StoreMeta;
+  propList?: PropList;
   pathList?: PathList;
   nodeList?: NodeList;
 }
@@ -46,7 +46,7 @@ export const getStore = async (options: getStoreProps) => {
   });
 
   store.pathList = getPathList(store.rootNode, slugList, perPage);
-  store.meta = getMetaData({
+  store.propList = getMetaData({
     slugList,
     perPage,
     pathList: store.pathList,

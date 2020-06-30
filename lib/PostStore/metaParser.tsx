@@ -15,25 +15,25 @@ import {
   getPostsByTags,
 } from './common';
 
-interface PageMeta {
+interface PageProp {
   count: number;
   totalPage: number;
   postList: PostData[];
 }
 
-interface MetaMap<T extends PageMeta> {
+interface PropMap<T extends PageProp> {
   [key: string]: T;
 }
 
-export interface StoreMeta {
+export interface PropList {
   count: {
     post: number;
     category: number;
     tag: number;
   };
-  category: MetaMap<PageMeta>;
-  page: MetaMap<PageMeta>;
-  tag: MetaMap<PageMeta>;
+  category: PropMap<PageProp>;
+  page: PropMap<PageProp>;
+  tag: PropMap<PageProp>;
 }
 
 interface getMetaDataProps {
@@ -43,10 +43,10 @@ interface getMetaDataProps {
   perPage?: number;
 }
 
-export const getMetaData = (options: getMetaDataProps): StoreMeta => {
+export const getMetaData = (options: getMetaDataProps): PropList => {
   const { rootNode, pathList, slugList, perPage = 10 } = options;
-  const count: StoreMeta['count'] = getCountMeta(rootNode);
-  const category: StoreMeta['category'] = getMeta({
+  const count: PropList['count'] = getCountMeta(rootNode);
+  const category: PropList['category'] = getMeta({
     rootNode,
     perPage,
     pathList: pathList.category,
@@ -54,7 +54,7 @@ export const getMetaData = (options: getMetaDataProps): StoreMeta => {
     getPostsFn: getPostsByCategories,
   });
 
-  const tag: StoreMeta['tag'] = getMeta({
+  const tag: PropList['tag'] = getMeta({
     rootNode,
     perPage,
     pathList: pathList.tag,
@@ -62,7 +62,7 @@ export const getMetaData = (options: getMetaDataProps): StoreMeta => {
     getPostsFn: getPostsByTags,
   });
 
-  const page: StoreMeta['page'] = getPageMeta(
+  const page: PropList['page'] = getPageMeta(
     rootNode,
     pathList,
     slugList,
@@ -77,7 +77,7 @@ export const getMetaData = (options: getMetaDataProps): StoreMeta => {
   };
 };
 
-const getCountMeta = (rootNode: FileNode): StoreMeta['count'] => {
+const getCountMeta = (rootNode: FileNode): PropList['count'] => {
   const category = getCategoriesAll(rootNode).length - 1;
   const post = getPostsAll(rootNode).length;
   const tag = getTagsAll(rootNode).length;
@@ -97,9 +97,9 @@ interface getMetaProps {
   perPage?: number;
 }
 
-const getMeta = (options: getMetaProps): MetaMap<PageMeta> => {
+const getMeta = (options: getMetaProps): PropMap<PageProp> => {
   const { rootNode, pathList, slugName, perPage, getPostsFn } = options;
-  const metaMap: MetaMap<PageMeta> = {};
+  const metaMap: PropMap<PageProp> = {};
 
   for (const path of pathList) {
     const slug = path.params[slugName] as string[];
@@ -122,7 +122,7 @@ const getMeta = (options: getMetaProps): MetaMap<PageMeta> => {
       postList = posts.map((node) => node.postData);
     }
 
-    const meta: PageMeta = {
+    const meta: PageProp = {
       count,
       postList,
       totalPage,
@@ -139,8 +139,8 @@ const getPageMeta = (
   pathList: PathList,
   slugList: PageSlug,
   perPage: number,
-): StoreMeta['page'] => {
-  const metaMap: StoreMeta['page'] = {};
+): PropList['page'] => {
+  const metaMap: PropList['page'] = {};
   const pageSlug = slugList.page;
 
   for (const path of pathList.page) {
@@ -153,7 +153,7 @@ const getPageMeta = (
     const count = postList.length;
     const totalPage = getTotalPage(posts.length, perPage);
 
-    const pageMeta: PageMeta = {
+    const pageMeta: PageProp = {
       count,
       postList,
       totalPage,
