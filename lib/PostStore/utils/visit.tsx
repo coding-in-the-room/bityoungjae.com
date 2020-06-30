@@ -1,4 +1,4 @@
-import { FileNode } from '../getNodeTree';
+import { FileNode } from './getNodeTree';
 const hasChildren = (node: FileNode) => !!node?.children?.length;
 
 export function* visit(
