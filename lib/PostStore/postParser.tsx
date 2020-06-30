@@ -18,6 +18,9 @@ export interface PostData {
   tags: string[];
   html: string;
   date: number;
+  categories: string[];
+  prevPost: string;
+  nextPost: string;
 }
 
 // TODO: validator 넣기 / 증분 빌드가 필요할까 고민해보기
@@ -37,6 +40,9 @@ export const parsePost = async (filePath: string, slug: string) => {
     tags: (tags as string[]).map((tag) => slugify(tag)),
     date: (date as Date).valueOf(),
     html,
+    categories: [],
+    prevPost: '',
+    nextPost: '',
   };
 
   return post;
