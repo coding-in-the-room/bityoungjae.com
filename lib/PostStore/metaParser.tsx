@@ -1,6 +1,6 @@
 import { PostData } from './postParser';
 import { FileNode } from './utils/getNodeTree';
-import { PathList } from './pathParser';
+import { PathList, Path } from './pathParser';
 import {
   getCategoriesAll,
   getPostsAll,
@@ -12,7 +12,7 @@ import {
   trimPagePath,
   getPostsByPage,
   getPageNum,
-  getPostsByTag,
+  getPostsByTags,
 } from './common';
 
 interface PageMeta {
@@ -46,21 +46,23 @@ interface getMetaDataProps {
 export const getMetaData = (options: getMetaDataProps): StoreMeta => {
   const { rootNode, pathList, slugList, perPage = 10 } = options;
   const count: StoreMeta['count'] = getCountMeta(rootNode);
-  const category: StoreMeta['category'] = getCategoryMeta(
+  const category: StoreMeta['category'] = getMeta({
     rootNode,
-    pathList,
-    slugList,
     perPage,
-  );
+    pathList: pathList.category,
+    slugName: slugList.category,
+    getPostsFn: getPostsByCategories,
+  });
+
+  const tag: StoreMeta['tag'] = getMeta({
+    rootNode,
+    perPage,
+    pathList: pathList.tag,
+    slugName: slugList.tag,
+    getPostsFn: getPostsByTags,
+  });
 
   const page: StoreMeta['page'] = getPageMeta(
-    rootNode,
-    pathList,
-    slugList,
-    perPage,
-  );
-
-  const tag: StoreMeta['tag'] = getTagMeta(
     rootNode,
     pathList,
     slugList,
@@ -76,7 +78,7 @@ export const getMetaData = (options: getMetaDataProps): StoreMeta => {
 };
 
 const getCountMeta = (rootNode: FileNode): StoreMeta['count'] => {
-  const category = getCategoriesAll(rootNode).length;
+  const category = getCategoriesAll(rootNode).length - 1;
   const post = getPostsAll(rootNode).length;
   const tag = getTagsAll(rootNode).length;
 
@@ -87,20 +89,23 @@ const getCountMeta = (rootNode: FileNode): StoreMeta['count'] => {
   };
 };
 
-const getCategoryMeta = (
-  rootNode: FileNode,
-  pathList: PathList,
-  slugList: PageSlug,
-  perPage: number,
-): StoreMeta['category'] => {
-  const metaMap: StoreMeta['category'] = {};
-  const categorySlug = slugList.category;
+interface getMetaProps {
+  rootNode: FileNode;
+  pathList: Path[];
+  slugName: string;
+  getPostsFn: (rootNode: FileNode, slug: string[]) => FileNode[];
+  perPage?: number;
+}
 
-  for (const path of pathList.category) {
-    const slug = path.params[categorySlug] as string[];
+const getMeta = (options: getMetaProps): MetaMap<PageMeta> => {
+  const { rootNode, pathList, slugName, perPage, getPostsFn } = options;
+  const metaMap: MetaMap<PageMeta> = {};
+
+  for (const path of pathList) {
+    const slug = path.params[slugName] as string[];
     const isPage = isPageSlug(slug);
-    const categories = trimPagePath(slug);
-    const posts = getPostsByCategories(rootNode, categories);
+    const trimmedSlug = trimPagePath(slug);
+    const posts = getPostsFn(rootNode, trimmedSlug);
     const totalPage = getTotalPage(posts.length, perPage);
 
     let count: number;
@@ -117,55 +122,13 @@ const getCategoryMeta = (
       postList = posts.map((node) => node.postData);
     }
 
-    const categoryMeta: PageMeta = {
+    const meta: PageMeta = {
       count,
       postList,
       totalPage,
     };
 
-    metaMap[slug.join('/')] = categoryMeta;
-  }
-
-  return metaMap;
-};
-
-const getTagMeta = (
-  rootNode: FileNode,
-  pathList: PathList,
-  slugList: PageSlug,
-  perPage: number,
-): StoreMeta['tag'] => {
-  const metaMap: StoreMeta['tag'] = {};
-  const tagSlug = slugList.tag;
-
-  for (const path of pathList.category) {
-    const slug = path.params[tagSlug] as string[];
-    const isPage = isPageSlug(slug);
-    const [tag] = trimPagePath(slug);
-    const posts = getPostsByTag(rootNode, tag);
-    const totalPage = getTotalPage(posts.length, perPage);
-
-    let count: number;
-    let postList: PostData[];
-
-    if (isPage) {
-      const currentPage = getPageNum(slug);
-      postList = getPostsByPage(posts, currentPage, perPage).map(
-        (node) => node.postData,
-      );
-      count = postList.length;
-    } else {
-      count = posts.length;
-      postList = posts.map((node) => node.postData);
-    }
-
-    const tagMeta: PageMeta = {
-      count,
-      postList,
-      totalPage,
-    };
-
-    metaMap[slug.join('/')] = tagMeta;
+    metaMap[slug.join('/')] = meta;
   }
 
   return metaMap;
