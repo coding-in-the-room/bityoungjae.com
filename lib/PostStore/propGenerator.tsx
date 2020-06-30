@@ -1,6 +1,6 @@
 import { PostData } from './postParser';
 import { FileNode } from './utils/getNodeTree';
-import { PathList, Path } from './pathParser';
+import { PathList, Path } from './pathGenerator';
 import {
   getCategoriesAll,
   getPostsAll,

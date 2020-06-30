@@ -1,6 +1,6 @@
 import { getNodeTree, FileNode } from './utils/getNodeTree';
-import { PropList, getMetaData } from './metaParser';
-import { PathList, getPathList } from './pathParser';
+import { PropList, getMetaData } from './propGenerator';
+import { PathList, getPathList } from './pathGenerator';
 import { PageSlug } from './common';
 
 interface NodeList {
