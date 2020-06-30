@@ -15,10 +15,16 @@ import {
   getPostsByTags,
 } from './common';
 
-interface PageProp {
+export interface PageProp {
   count: number;
   totalPage: number;
   postList: PostData[];
+}
+
+export interface GlobalProp {
+  postCount: number;
+  categoryCount: number;
+  tagCount: number;
 }
 
 interface PropMap<T extends PageProp> {
@@ -26,11 +32,7 @@ interface PropMap<T extends PageProp> {
 }
 
 export interface PropList {
-  global: {
-    postCount: number;
-    categoryCount: number;
-    tagCount: number;
-  };
+  global: GlobalProp;
   category: PropMap<PageProp>;
   page: PropMap<PageProp>;
   tag: PropMap<PageProp>;
