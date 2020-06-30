@@ -47,7 +47,17 @@ test('getPostsBySlug', async () => {
 
 test('propList Snapshot', async () => {
   const store = await getStore({ postDir: testPath, perPage: 2 });
-  const testResult = await snapShotTest(store.propList, 'propList');
 
-  expect(testResult).toBe(true);
+  const tests = [
+    snapShotTest(store.propList.category, 'propList.category'),
+    snapShotTest(store.propList.tag, 'propList.tag'),
+    snapShotTest(store.propList.page, 'propList.page'),
+    snapShotTest(store.propList.post, 'propList.post'),
+    snapShotTest(store.propList.global, 'propList.global'),
+  ];
+
+  const testResults = await Promise.all(tests);
+  const result = testResults.every((r) => r === true);
+
+  expect(result).toBe(true);
 });
