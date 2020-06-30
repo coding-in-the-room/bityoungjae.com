@@ -2,8 +2,9 @@ import fs from 'fs';
 import { getStore } from '../lib/PostStore/store';
 import { getPostsByCategories, getPostBySlug } from '../lib/PostStore/common';
 import isEqual from 'lodash.isequal';
-import { testPath } from './env';
+import { testPath } from './lib/env';
 import { getCategoriesPaths } from '../lib/PostStore/pathGenerator';
+import { snapShotTest } from './lib/snapshotTest';
 
 test('getCategoriesPaths', async () => {
   const store = await getStore({ postDir: testPath, perPage: 2 });
@@ -44,7 +45,9 @@ test('getPostsBySlug', async () => {
   expect(post?.postData?.title).toBe('자바스크립트의 모든 거엇!');
 });
 
-test('getMetaData', async () => {
+test('propList Snapshot', async () => {
   const store = await getStore({ postDir: testPath, perPage: 2 });
-  fs.writeFileSync('./test.json', JSON.stringify(store.propList, null, 2));
+  const testResult = await snapShotTest(store.propList, 'propList');
+
+  expect(testResult).toBe(true);
 });
