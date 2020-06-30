@@ -26,10 +26,10 @@ interface PropMap<T extends PageProp> {
 }
 
 export interface PropList {
-  count: {
-    post: number;
-    category: number;
-    tag: number;
+  global: {
+    postCount: number;
+    categoryCount: number;
+    tagCount: number;
   };
   category: PropMap<PageProp>;
   page: PropMap<PageProp>;
@@ -45,7 +45,7 @@ interface getPropDataProps {
 
 export const getPropData = (options: getPropDataProps): PropList => {
   const { rootNode, pathList, slugList, perPage = 10 } = options;
-  const count: PropList['count'] = getCountProp(rootNode);
+  const global: PropList['global'] = getCountProp(rootNode);
   const category: PropList['category'] = getProp({
     rootNode,
     perPage,
@@ -70,22 +70,22 @@ export const getPropData = (options: getPropDataProps): PropList => {
   );
 
   return {
-    count,
+    global,
     category,
     page,
     tag,
   };
 };
 
-const getCountProp = (rootNode: FileNode): PropList['count'] => {
-  const category = getCategoriesAll(rootNode).length - 1;
-  const post = getPostsAll(rootNode).length;
-  const tag = getTagsAll(rootNode).length;
+const getCountProp = (rootNode: FileNode): PropList['global'] => {
+  const categoryCount = getCategoriesAll(rootNode).length - 1;
+  const postCount = getPostsAll(rootNode).length;
+  const tagCount = getTagsAll(rootNode).length;
 
   return {
-    category,
-    post,
-    tag,
+    categoryCount,
+    postCount,
+    tagCount,
   };
 };
 
