@@ -63,7 +63,7 @@ export const getPostsByTags = (rootNode: FileNode, tags: string[]) => {
 
     let isMatch = false;
     const postTags = node.postData.tags;
-    isMatch = tags.every((tag) => postTags.includes(tag));
+    isMatch = tags.some((tag) => postTags.includes(tag));
     return isMatch;
   });
 };
