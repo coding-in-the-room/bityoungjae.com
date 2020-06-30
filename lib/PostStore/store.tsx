@@ -1,7 +1,7 @@
 import { getNodeTree, FileNode } from './utils/getNodeTree';
 import { PropList, getPropList } from './propGenerator';
-import { PathList, getPathList } from './pathGenerator';
-import { SlugOption } from './common';
+import { PathList, getPathList, Path } from './pathGenerator';
+import { SlugOption, isPageSlug, getPostsByCategories } from './common';
 
 interface PostStore {
   postDir: string;
@@ -44,6 +44,8 @@ export const getStore = async ({
     rootNode: rootNode,
   });
 
+  appendExtraToPost(rootNode, pathList.category, filledSlugOption.category);
+
   const propList = getPropList({
     perPage,
     slugOption: filledSlugOption,
@@ -59,4 +61,27 @@ export const getStore = async ({
   };
 
   return store;
+};
+
+const appendExtraToPost = (
+  rootNode: FileNode,
+  categoryPathList: Path[],
+  categorySlug: string,
+) => {
+  const trimmedCategories = categoryPathList
+    .map((path) => path.params[categorySlug])
+    .filter((slug) => !isPageSlug(slug as string[])) as string[][];
+
+  for (const category of trimmedCategories) {
+    const posts = getPostsByCategories(rootNode, category);
+    let prev: FileNode;
+    for (const post of posts) {
+      if (prev) {
+        prev.postData.nextPost = post.slug;
+        post.postData.prevPost = prev.slug;
+      }
+      post.postData.categories = category;
+      prev = post;
+    }
+  }
 };
