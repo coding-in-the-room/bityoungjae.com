@@ -13,6 +13,7 @@ import {
   getPostsByPage,
   getPageNum,
   getPostsByTags,
+  getPostBySlug,
 } from './common';
 
 export interface PageProp {
@@ -21,13 +22,17 @@ export interface PageProp {
   postList: PostData[];
 }
 
+export interface PostProp extends PostData {
+  relatedPosts: PostData[];
+}
+
 export interface GlobalProp {
   postCount: number;
   categoryCount: number;
   tagCount: number;
 }
 
-interface PropMap<T extends PageProp> {
+interface PropMap<T> {
   [key: string]: T;
 }
 
@@ -36,6 +41,7 @@ export interface PropList {
   category: PropMap<PageProp>;
   page: PropMap<PageProp>;
   tag: PropMap<PageProp>;
+  post: PropMap<PostProp>;
 }
 
 interface getPropListProps {
@@ -47,8 +53,8 @@ interface getPropListProps {
 
 export const getPropList = (options: getPropListProps): PropList => {
   const { rootNode, pathList, slugOption, perPage = 10 } = options;
-  const global: PropList['global'] = getCountProp(rootNode);
-  const category: PropList['category'] = getProp({
+  const global: PropList['global'] = getGlobalProps(rootNode);
+  const category: PropList['category'] = makePropList({
     rootNode,
     perPage,
     pathList: pathList.category,
@@ -56,7 +62,7 @@ export const getPropList = (options: getPropListProps): PropList => {
     getPostsFn: getPostsByCategories,
   });
 
-  const tag: PropList['tag'] = getProp({
+  const tag: PropList['tag'] = makePropList({
     rootNode,
     perPage,
     pathList: pathList.tag,
@@ -64,22 +70,26 @@ export const getPropList = (options: getPropListProps): PropList => {
     getPostsFn: getPostsByTags,
   });
 
-  const page: PropList['page'] = getPageProp(
+  const page: PropList['page'] = makePropList({
     rootNode,
-    pathList,
-    slugOption,
     perPage,
-  );
+    pathList: pathList.page,
+    slugName: slugOption.page,
+    getPostsFn: getPostsAll,
+  });
+
+  const post = makePostPropList(rootNode, pathList.post, slugOption.post);
 
   return {
     global,
     category,
     page,
     tag,
+    post,
   };
 };
 
-const getCountProp = (rootNode: FileNode): PropList['global'] => {
+const getGlobalProps = (rootNode: FileNode): PropList['global'] => {
   const categoryCount = getCategoriesAll(rootNode).length - 1;
   const postCount = getPostsAll(rootNode).length;
   const tagCount = getTagsAll(rootNode).length;
@@ -95,11 +105,11 @@ interface getPropProps {
   rootNode: FileNode;
   pathList: Path[];
   slugName: string;
-  getPostsFn: (rootNode: FileNode, slug: string[]) => FileNode[];
+  getPostsFn: (rootNode: FileNode, slug?: string[]) => FileNode[];
   perPage?: number;
 }
 
-const getProp = (options: getPropProps): PropMap<PageProp> => {
+const makePropList = (options: getPropProps): PropMap<PageProp> => {
   const { rootNode, pathList, slugName, perPage, getPostsFn } = options;
   const propMap: PropMap<PageProp> = {};
 
@@ -136,33 +146,28 @@ const getProp = (options: getPropProps): PropMap<PageProp> => {
   return propMap;
 };
 
-const getPageProp = (
+const makePostPropList = (
   rootNode: FileNode,
-  pathList: PathList,
-  slugOption: SlugOption,
-  perPage: number,
-): PropList['page'] => {
-  const propMap: PropList['page'] = {};
-  const pageSlug = slugOption.page;
+  pathList: Path[],
+  slugName: string,
+): PropList['post'] => {
+  const postMap: PropList['post'] = {};
 
-  for (const path of pathList.page) {
-    const slug = path.params[pageSlug] as string[];
-    const posts = getPostsAll(rootNode);
-    const currentPage = getPageNum(slug);
-    const postList = getPostsByPage(posts, currentPage, perPage).map(
-      (node) => node.postData,
-    );
-    const count = postList.length;
-    const totalPage = getTotalPage(posts.length, perPage);
+  for (const path of pathList) {
+    const slug = path.params[slugName] as string;
+    const post = getPostBySlug(rootNode, slug);
+    const postData = post.postData;
+    const categories = postData?.categories;
+    let relatedPosts: PostData[] = [];
 
-    const pageProp: PageProp = {
-      count,
-      postList,
-      totalPage,
-    };
+    if (categories?.length > 0) {
+      relatedPosts = getPostsByCategories(rootNode, categories)
+        .filter((node) => node.slug !== slug)
+        .map((node) => node.postData);
+    }
 
-    propMap[slug.join('/')] = pageProp;
+    postMap[slug] = { ...post.postData, relatedPosts };
   }
 
-  return propMap;
+  return postMap;
 };
