@@ -1,58 +1,62 @@
 import { getNodeTree, FileNode } from './utils/getNodeTree';
-import { PropList, getPropData } from './propGenerator';
+import { PropList, getPropList } from './propGenerator';
 import { PathList, getPathList } from './pathGenerator';
-import { PageSlug } from './common';
-
-interface NodeList {
-  posts: FileNode[];
-  categories: FileNode[];
-}
+import { SlugOption } from './common';
 
 interface PostStore {
-  shouldUpdate: boolean;
-  rootDir?: string;
-  rootNode?: FileNode;
-  propList?: PropList;
-  pathList?: PathList;
-  nodeList?: NodeList;
+  postDir: string;
+  rootNode: FileNode;
+  propList: PropList;
+  pathList: PathList;
 }
 
-let store: PostStore = {
-  shouldUpdate: true,
-};
-
 interface getStoreProps {
-  rootDir: string;
-  slugOption?: PageSlug;
+  postDir: string;
+  slugOption?: SlugOption;
   perPage?: number;
 }
 
-const defaultSlugs: PageSlug = {
+const defaultSlugs: SlugOption = {
   category: 'slug',
   tag: 'slug',
   post: 'slug',
   page: 'slug',
 };
 
-export const getStore = async (options: getStoreProps) => {
-  if (!store.shouldUpdate) return store;
+let store: PostStore;
 
-  const { rootDir, slugOption = defaultSlugs, perPage = 10 } = options;
-  const slugList: PageSlug = { ...slugOption, ...defaultSlugs };
+export const getStore = async ({
+  postDir,
+  perPage = 10,
+  slugOption = defaultSlugs,
+}: getStoreProps): Promise<PostStore> => {
+  if (store) return store;
 
-  store.rootDir = rootDir;
-  store.rootNode = await getNodeTree({
-    nodePath: rootDir,
+  const filledSlugOption: SlugOption = { ...defaultSlugs, ...slugOption };
+
+  const rootNode = await getNodeTree({
+    nodePath: postDir,
   });
 
-  store.pathList = getPathList(store.rootNode, slugList, perPage);
-  store.propList = getPropData({
-    slugList,
+  const pathList = getPathList({
     perPage,
-    pathList: store.pathList,
-    rootNode: store.rootNode,
+    slugOption: filledSlugOption,
+    rootNode: rootNode,
   });
 
-  store.shouldUpdate = false;
+  const propList = getPropList({
+    perPage,
+    slugOption: filledSlugOption,
+    pathList: pathList,
+    rootNode: rootNode,
+  });
+
+  store = {
+    postDir,
+    rootNode,
+    pathList,
+    propList,
+  };
+
   return store;
 };

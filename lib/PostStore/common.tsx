@@ -1,7 +1,7 @@
 import { FileNode } from './utils/getNodeTree';
 import { findNode, findNodeAll } from './utils/visit';
 
-export interface PageSlug {
+export interface SlugOption {
   category?: string;
   tag?: string;
   post?: string;

@@ -1,5 +1,5 @@
-// import fs from 'fs';
-import { getNodeTree } from '../lib/PostStore/getNodeTree';
+import fs from 'fs';
+import { getNodeTree } from '../lib/PostStore/utils/getNodeTree';
 import snapshot from './testPosts.snapshot.json';
 import isEqual from 'lodash.isequal';
 import path from 'path';
@@ -14,12 +14,11 @@ test('getNodeTree', async () => {
   const postStore = [];
   const fileTree = await getNodeTree({
     nodePath: rootDir,
-    postStore,
   });
   const stringifiedTree = JSON.stringify(fileTree, null, 2);
   const json = JSON.parse(stringifiedTree);
 
-  // await fs.promises.writeFile(snapshotPath, stringifiedTree);
+  await fs.promises.writeFile(snapshotPath, stringifiedTree);
 
   expect(isEqual(snapshot, json)).toBe(true);
 });

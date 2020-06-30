@@ -1,11 +1,12 @@
+import fs from 'fs';
 import { getStore } from '../lib/PostStore/store';
 import { getPostsByCategories, getPostBySlug } from '../lib/PostStore/common';
 import isEqual from 'lodash.isequal';
 import { testPath } from './env';
-import { getCategoriesPaths } from '../lib/PostStore/pathParser';
+import { getCategoriesPaths } from '../lib/PostStore/pathGenerator';
 
 test('getCategoriesPaths', async () => {
-  const store = await getStore({ rootDir: testPath, perPage: 2 });
+  const store = await getStore({ postDir: testPath, perPage: 2 });
   const categories = getCategoriesPaths(store.rootNode);
 
   const target = [
@@ -27,7 +28,7 @@ test('getCategoriesPaths', async () => {
 });
 
 test('getPostsByCategories', async () => {
-  const store = await getStore({ rootDir: testPath });
+  const store = await getStore({ postDir: testPath });
   const posts = getPostsByCategories(store.rootNode, [
     'javascript',
     '특별-시리즈',
@@ -37,8 +38,13 @@ test('getPostsByCategories', async () => {
 });
 
 test('getPostsBySlug', async () => {
-  const store = await getStore({ rootDir: testPath });
+  const store = await getStore({ postDir: testPath });
   const post = getPostBySlug(store.rootNode, '자바스크립트의-모든-것-1탄');
 
   expect(post?.postData?.title).toBe('자바스크립트의 모든 거엇!');
+});
+
+test('getMetaData', async () => {
+  const store = await getStore({ postDir: testPath, perPage: 2 });
+  fs.writeFileSync('./test.json', JSON.stringify(store.propList, null, 2));
 });

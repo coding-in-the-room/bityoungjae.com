@@ -3,7 +3,7 @@ import {
   isCategory,
   isPost,
   getPostsAll,
-  PageSlug,
+  SlugOption,
   getTagsAll,
   getTotalPage,
 } from './common';
@@ -92,11 +92,15 @@ export const getPagePaths = (
   return pagePaths;
 };
 
-export const getPathList = (
-  rootNode: FileNode,
-  slugOption: PageSlug,
-  perPage: number = 10,
-): PathList => {
+interface getPathListProps {
+  rootNode: FileNode;
+  slugOption: SlugOption;
+  perPage: number;
+}
+
+export const getPathList = (options: getPathListProps): PathList => {
+  const { rootNode, slugOption, perPage } = options;
+
   const {
     category: categorySlug,
     page: pageSlug,

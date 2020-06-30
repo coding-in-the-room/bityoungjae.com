@@ -5,7 +5,7 @@ import {
   getCategoriesAll,
   getPostsAll,
   getTagsAll,
-  PageSlug,
+  SlugOption,
   getPostsByCategories,
   getTotalPage,
   isPageSlug,
@@ -38,21 +38,21 @@ export interface PropList {
   tag: PropMap<PageProp>;
 }
 
-interface getPropDataProps {
+interface getPropListProps {
   rootNode: FileNode;
   pathList: PathList;
-  slugList: PageSlug;
+  slugOption: SlugOption;
   perPage?: number;
 }
 
-export const getPropData = (options: getPropDataProps): PropList => {
-  const { rootNode, pathList, slugList, perPage = 10 } = options;
+export const getPropList = (options: getPropListProps): PropList => {
+  const { rootNode, pathList, slugOption, perPage = 10 } = options;
   const global: PropList['global'] = getCountProp(rootNode);
   const category: PropList['category'] = getProp({
     rootNode,
     perPage,
     pathList: pathList.category,
-    slugName: slugList.category,
+    slugName: slugOption.category,
     getPostsFn: getPostsByCategories,
   });
 
@@ -60,14 +60,14 @@ export const getPropData = (options: getPropDataProps): PropList => {
     rootNode,
     perPage,
     pathList: pathList.tag,
-    slugName: slugList.tag,
+    slugName: slugOption.tag,
     getPostsFn: getPostsByTags,
   });
 
   const page: PropList['page'] = getPageProp(
     rootNode,
     pathList,
-    slugList,
+    slugOption,
     perPage,
   );
 
@@ -139,11 +139,11 @@ const getProp = (options: getPropProps): PropMap<PageProp> => {
 const getPageProp = (
   rootNode: FileNode,
   pathList: PathList,
-  slugList: PageSlug,
+  slugOption: SlugOption,
   perPage: number,
 ): PropList['page'] => {
   const propMap: PropList['page'] = {};
-  const pageSlug = slugList.page;
+  const pageSlug = slugOption.page;
 
   for (const path of pathList.page) {
     const slug = path.params[pageSlug] as string[];
