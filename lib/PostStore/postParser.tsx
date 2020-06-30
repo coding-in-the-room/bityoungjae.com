@@ -8,6 +8,7 @@ import rehypeHtml from 'rehype-stringify';
 import rehypePrism from './utils/rehype-prism';
 import rehypeSanitize from 'rehype-sanitize';
 import sanitizeSchema from './utils/sanitizeSchema.json';
+import { slugify } from './utils/slugify';
 
 const fsPromise = fs.promises;
 
@@ -16,9 +17,10 @@ export interface PostData {
   title: string;
   tags: string[];
   html: string;
-  date: string;
+  date: number;
 }
 
+// TODO: validator 넣기 / 증분 빌드가 필요할까 고민해보기
 export const parsePost = async (filePath: string, slug: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
@@ -32,8 +34,8 @@ export const parsePost = async (filePath: string, slug: string) => {
   const post: PostData = {
     slug,
     title,
-    tags,
-    date: date.toString(),
+    tags: (tags as string[]).map((tag) => slugify(tag)),
+    date: (date as Date).valueOf(),
     html,
   };
 

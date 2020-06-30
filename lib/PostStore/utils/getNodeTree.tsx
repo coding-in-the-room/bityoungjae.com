@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import { PostData, parsePost } from './postParser';
-import { slugify } from './utils/slugify';
+import { PostData, parsePost } from '../postParser';
+import { slugify } from './slugify';
 
 const fsPromise = fs.promises;
 const markdownRegex = new RegExp(/\.mdx?$/);
@@ -25,13 +25,11 @@ export interface FileNode {
 
 interface getNodeTreeProps {
   nodePath: string;
-  postStore?: FileNode[];
   isFile?: boolean;
 }
 
 export async function getNodeTree({
   nodePath,
-  postStore,
   isFile = false,
 }: getNodeTreeProps): Promise<FileNode> {
   const nodeName = path.basename(nodePath);
@@ -47,8 +45,6 @@ export async function getNodeTree({
 
   if (isFile) {
     newNode.postData = await parsePost(nodePath, newNode.slug);
-    postStore.push(newNode);
-
     return newNode;
   }
 
@@ -61,15 +57,12 @@ export async function getNodeTree({
     const newPath = `${nodePath}/${node.name}`;
 
     if (isDirectory(node)) {
-      newNode.children.push(
-        await getNodeTree({ nodePath: newPath, postStore }),
-      );
+      newNode.children.push(await getNodeTree({ nodePath: newPath }));
     } else if (isMarkdown(node)) {
       newNode.children.push(
         await getNodeTree({
           nodePath: newPath,
           isFile: true,
-          postStore,
         }),
       );
     }
