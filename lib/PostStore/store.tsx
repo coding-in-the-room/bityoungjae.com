@@ -1,5 +1,5 @@
 import { getNodeTree, FileNode } from './utils/getNodeTree';
-import { PropList, getMetaData } from './propGenerator';
+import { PropList, getPropData } from './propGenerator';
 import { PathList, getPathList } from './pathGenerator';
 import { PageSlug } from './common';
 
@@ -46,7 +46,7 @@ export const getStore = async (options: getStoreProps) => {
   });
 
   store.pathList = getPathList(store.rootNode, slugList, perPage);
-  store.propList = getMetaData({
+  store.propList = getPropData({
     slugList,
     perPage,
     pathList: store.pathList,
