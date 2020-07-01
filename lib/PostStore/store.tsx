@@ -10,7 +10,7 @@ interface PostStore {
   pathList: PathList;
 }
 
-interface getStoreProps {
+export interface getStoreProps {
   postDir: string;
   slugOption?: SlugOption;
   perPage?: number;
