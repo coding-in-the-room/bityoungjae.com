@@ -1,5 +1,5 @@
 import { PostData } from './postParser';
-import { FileNode } from './utils/getNodeTree';
+import { FileNode, PostNode } from './utils/getNodeTree';
 import { PathList, Path } from './pathGenerator';
 import {
   getCategoriesAll,
@@ -65,7 +65,7 @@ export const getPropList = (options: getPropListProps): PropList => {
     rootNode,
     perPage,
     pathList: pathList.category,
-    slugName: slugOption.category,
+    slugName: slugOption.category!,
     getPostsFn: getPostsByCategories,
   });
 
@@ -73,7 +73,7 @@ export const getPropList = (options: getPropListProps): PropList => {
     rootNode,
     perPage,
     pathList: pathList.tag,
-    slugName: slugOption.tag,
+    slugName: slugOption.tag!,
     getPostsFn: getPostsByTags,
   });
 
@@ -81,11 +81,11 @@ export const getPropList = (options: getPropListProps): PropList => {
     rootNode,
     perPage,
     pathList: pathList.page,
-    slugName: slugOption.page,
+    slugName: slugOption.page!,
     getPostsFn: getPostsAll,
   });
 
-  const post = makePostPropList(rootNode, pathList.post, slugOption.post);
+  const post = makePostPropList(rootNode, pathList.post, slugOption.post!);
 
   return {
     global,
@@ -112,12 +112,12 @@ interface getPropProps {
   rootNode: FileNode;
   pathList: Path[];
   slugName: string;
-  getPostsFn: (rootNode: FileNode, slug?: string[]) => FileNode[];
+  getPostsFn: (rootNode: FileNode, slug?: string[]) => PostNode[];
   perPage?: number;
 }
 
 const makePropList = (options: getPropProps): PropMap<PostListProp> => {
-  const { rootNode, pathList, slugName, perPage, getPostsFn } = options;
+  const { rootNode, pathList, slugName, perPage = 10, getPostsFn } = options;
   const propMap: PropMap<PostListProp> = {};
 
   for (const path of pathList) {
@@ -156,6 +156,9 @@ const makePostPropList = (
   for (const path of pathList) {
     const slug = path.params[slugName] as string;
     const post = getPostBySlug(rootNode, slug);
+
+    if (!post) continue;
+
     const postData = post.postData;
     const categories = postData?.categories;
     let relatedPosts: PostData[] = [];

@@ -37,6 +37,8 @@ export const getCategoriesPaths = (
 ) => {
   const result: string[][] = [];
 
+  if (!rootNode.children) return result;
+
   if (parents.length) {
     result.push(parents);
     const pagePaths = getPagePaths(rootNode, perPage);
@@ -76,7 +78,7 @@ export const getTagsPaths = (
 export const getPagePaths = (
   rootNode: FileNode,
   perPage = 5,
-  nodeCondition = isPost,
+  nodeCondition: (node: FileNode) => boolean = isPost,
 ) => {
   const pagePaths: string[][] = [];
 
@@ -106,7 +108,7 @@ export const getPathList = (options: getPathListProps): PathList => {
     page: pageSlug,
     post: postSlug,
     tag: tagSlug,
-  } = slugOption;
+  } = slugOption as Required<SlugOption>;
 
   const convertToPostPath = convertToPath(postSlug);
   const convertToCategoryPath = convertToPath(categorySlug);

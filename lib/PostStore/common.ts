@@ -1,4 +1,4 @@
-import { FileNode } from './utils/getNodeTree';
+import { FileNode, PostNode, CategoryNode } from './utils/getNodeTree';
 import { findNode, findNodeAll } from './utils/visit';
 
 export interface SlugOption {
@@ -8,21 +8,28 @@ export interface SlugOption {
   page?: string;
 }
 
-export const isCategory = (node: FileNode) => node.type === 'category';
-export const isPost = (node: FileNode) => node.type === 'post';
+export const isCategory = (node: FileNode): node is CategoryNode =>
+  node.type === 'category';
+export const isPost = (node: FileNode): node is PostNode =>
+  node.type === 'post';
 
 export const findCategory = (rootNode: FileNode, categories: string[]) => {
-  let now: FileNode = rootNode;
+  let now: FileNode | undefined = rootNode;
 
   for (const category of categories) {
-    now = findNode(now, (node) => isCategory(node) && node.slug === category);
+    const finded = findNode(
+      now,
+      (node) => isCategory(node) && node.slug === category,
+    );
+    if (!finded) break;
+    now = finded;
   }
 
   return now;
 };
 
 export const getPostsAll = (rootNode: FileNode) =>
-  findNodeAll(rootNode, isPost);
+  findNodeAll(rootNode, isPost) as PostNode[];
 
 export const getCategoriesAll = (rootNode: FileNode) =>
   findNodeAll(rootNode, isCategory);
@@ -37,8 +44,15 @@ export const getTagsAll = (rootNode: FileNode) => {
   return [...tags];
 };
 
-export const getPostBySlug = (rootNode: FileNode, slug: string): FileNode => {
-  return findNode(rootNode, (node) => node.slug === slug);
+export const getPostBySlug = (
+  rootNode: FileNode,
+  slug: string,
+): PostNode | undefined => {
+  const finded = findNode(
+    rootNode,
+    (node) => isPost(node) && node.slug === slug,
+  );
+  if (finded && isPost(finded)) return finded;
 };
 
 export const getPostsByCategories = (
@@ -65,11 +79,11 @@ export const getPostsByTags = (rootNode: FileNode, tags: string[]) => {
     const postTags = node.postData.tags;
     isMatch = tags.some((tag) => postTags.includes(tag));
     return isMatch;
-  });
+  }) as PostNode[];
 };
 
 export const getPostsByPage = (
-  postList: FileNode[],
+  postList: PostNode[],
   page: number,
   perPage = 5,
 ) => {

@@ -1,4 +1,4 @@
-import { getNodeTree, FileNode } from './utils/getNodeTree';
+import { getNodeTree, FileNode, PostNode } from './utils/getNodeTree';
 import { PropList, getPropList } from './propGenerator';
 import { PathList, getPathList, Path } from './pathGenerator';
 import { SlugOption, isPageSlug, getPostsByCategories } from './common';
@@ -16,7 +16,7 @@ export interface getStoreProps {
   perPage?: number;
 }
 
-const defaultSlugs: SlugOption = {
+const defaultSlugs: Required<SlugOption> = {
   category: 'slug',
   tag: 'slug',
   post: 'slug',
@@ -32,7 +32,10 @@ export const getStore = async ({
 }: getStoreProps): Promise<PostStore> => {
   if (store) return store;
 
-  const filledSlugOption: SlugOption = { ...defaultSlugs, ...slugOption };
+  const filledSlugOption: Required<SlugOption> = {
+    ...defaultSlugs,
+    ...slugOption,
+  };
 
   const rootNode = await getNodeTree({
     nodePath: postDir,
@@ -74,7 +77,7 @@ const appendExtraToPost = (
 
   for (const category of trimmedCategories) {
     const posts = getPostsByCategories(rootNode, category);
-    let prev: FileNode;
+    let prev: PostNode | undefined;
     for (const post of posts) {
       if (prev) {
         prev.postData.nextPost = post.slug;

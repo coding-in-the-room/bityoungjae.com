@@ -8,7 +8,7 @@ interface rehypeNode extends Node {
   tagName: string;
   properties: {
     className?: string[];
-    [key: string]: string[];
+    [key: string]: string[] | undefined;
   };
   children?: (Node & { value: string })[];
 }
@@ -20,7 +20,7 @@ const getLanguage = (node: rehypeNode) => {
   if (!Array.isArray(className)) return '';
 
   const languageClass = className.find((name) => name.startsWith(langPrefix));
-  const language = languageClass.substr(langPrefix.length);
+  const language = languageClass?.substr(langPrefix.length);
 
   return language;
 };
@@ -33,7 +33,7 @@ const checkCode = (node: rehypeNode): boolean => {
 };
 
 const getCode = (node: rehypeNode): string => {
-  return checkCode(node) ? node.children[0].value : '';
+  return checkCode(node) ? node.children![0].value : '';
 };
 
 const setCode = (node: rehypeNode, code: string): void => {
@@ -41,7 +41,9 @@ const setCode = (node: rehypeNode, code: string): void => {
     .use(rehypeParse, { fragment: true })
     .parse(code) as rehypeNode;
 
-  node.children = [...fragment.children];
+  if (fragment.children) {
+    node.children = [...fragment.children];
+  }
 };
 
 const nodeEditor = (node: rehypeNode) => {

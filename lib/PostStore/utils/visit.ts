@@ -1,5 +1,4 @@
 import { FileNode } from './getNodeTree';
-const hasChildren = (node: FileNode) => !!node?.children?.length;
 
 export function* visit(
   rootNode: FileNode,
@@ -7,7 +6,7 @@ export function* visit(
 ): Generator<[any, FileNode]> {
   yield [fn(rootNode), rootNode];
 
-  if (hasChildren(rootNode)) {
+  if (rootNode.children) {
     for (const node of rootNode.children) {
       yield* visit(node, fn);
     }
