@@ -1,4 +1,6 @@
 import fs from 'fs';
+import path from 'path';
+import { format } from 'date-fns';
 import matter from 'gray-matter';
 import unified from 'unified';
 import remark from 'remark-parse';
@@ -24,22 +26,36 @@ export interface PostData {
   nextPost: string;
 }
 
+const getPostTimestamp = async (
+  filePath: string,
+  date?: Date,
+): Promise<number> => {
+  if (date == null) {
+    const ctime = (await fsPromise.stat(filePath)).ctime;
+    return ctime.valueOf();
+  }
+
+  return (date as Date).valueOf();
+};
+
 // TODO: validator 넣기 / 증분 빌드가 필요할까 고민해보기
-export const parsePost = async (filePath: string, slug: string) => {
+export const parsePost = async (filePath: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
   const {
-    data: { title = '', date, tags = [], published = true },
+    data: { title, date, tags = [], published = true },
     content = '',
   } = matter(rawText);
 
+  const timestamp = await getPostTimestamp(filePath, date);
+  const slug = parseSlug(filePath, timestamp);
   const html = await markdownToHTML(content);
 
   const post: PostData = {
     slug,
-    title,
+    title: title ? title : slug,
     tags: (tags as string[]).map((tag) => slugify(tag)),
-    date: (date as Date).valueOf(),
+    date: timestamp,
     html,
     isPublished: published ? true : false,
     categories: [],
@@ -65,4 +81,16 @@ export const markdownToHTML = async (markdown: string) => {
   const html = parsedData.contents.toString();
 
   return html;
+};
+
+const parseSlug = (filePath: string, timestamp: number): string => {
+  const basename = path.basename(filePath, '.md');
+  const datePrepended = prependDate(basename, timestamp);
+  const slugified = slugify(datePrepended);
+
+  return slugified;
+};
+
+const prependDate = (name: string, timestamp: number): string => {
+  return `${format(new Date(timestamp), 'yyyy-MM-dd')}-${name}`;
 };

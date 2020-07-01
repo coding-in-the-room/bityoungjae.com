@@ -11,9 +11,6 @@ const isDirectory = (dirent: fs.Dirent) => dirent.isDirectory();
 const isMarkdown = (dirent: fs.Dirent) =>
   dirent.isFile() && markdownRegex.test(dirent.name);
 
-const removeMarkdownExtension = (name: string) =>
-  name.replace(markdownRegex, '');
-
 export interface FileNode {
   type: 'category' | 'post';
   name: string;
@@ -47,14 +44,14 @@ export async function getNodeTree({
   const newNode: FileNode = {
     type: isFile ? 'post' : 'category',
     name: nodeName,
-    slug: isFile
-      ? slugify(removeMarkdownExtension(nodeName))
-      : slugify(nodeName),
+    slug: isFile ? '' : slugify(nodeName),
     path: nodePath,
   };
 
   if (isFile) {
-    newNode.postData = await parsePost(nodePath, newNode.slug);
+    newNode.postData = await parsePost(nodePath);
+    newNode.slug = newNode.postData.slug;
+
     return newNode;
   }
 
