@@ -38,7 +38,6 @@ const getPostTimestamp = async (
   return (date as Date).valueOf();
 };
 
-// TODO: validator 넣기 / 증분 빌드가 필요할까 고민해보기
 export const parsePost = async (filePath: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
