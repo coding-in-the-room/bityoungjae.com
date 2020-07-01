@@ -1,12 +1,16 @@
 import { getStore, getStoreProps } from './store';
-import { GlobalProp, PostListProp, PostProp, PropList } from './propGenerator';
+import {
+  GlobalProp,
+  PostListProp,
+  PostProp,
+  PropList,
+  PropType,
+} from './propGenerator';
 import { Path, PathList } from './pathGenerator';
 
 type PageCategory = keyof PropList & keyof PathList;
 
-interface PageProp<
-  T extends PostListProp | PostProp = PostListProp | PostProp
-> {
+interface PageProp<T> {
   global: GlobalProp;
   main: T;
 }
@@ -14,7 +18,7 @@ interface PageProp<
 export type PostPageProp = PageProp<PostProp>;
 export type PostListPageProp = PageProp<PostListProp>;
 
-const makePageHandler = (pageCategory: PageCategory) => ({
+const makePageHandler = <T extends PageCategory>(pageCategory: T) => ({
   postDir,
   slugOption,
   perPage = 10,
@@ -30,14 +34,16 @@ const makePageHandler = (pageCategory: PageCategory) => ({
     return pathList;
   }
 
-  async function getPropsBySlug(slug: string | string[]): Promise<PageProp> {
+  async function getPropsBySlug(
+    slug: string | string[],
+  ): Promise<PageProp<PropType<T>>> {
     const store = await getStore({
       postDir,
       slugOption,
       perPage,
     });
 
-    const propList = store.propList[pageCategory];
+    const propList = store.propList[pageCategory] as PropType<T>;
     const key = Array.isArray(slug) ? slug.join('/') : slug;
 
     return {
@@ -46,24 +52,9 @@ const makePageHandler = (pageCategory: PageCategory) => ({
     };
   }
 
-  async function getMainPostListProps(): Promise<PageProp> {
-    const store = await getStore({
-      postDir,
-      slugOption,
-      perPage,
-    });
-
-    const propList = store.propList.page;
-    return {
-      global: store.propList.global,
-      main: propList['page/1'],
-    };
-  }
-
   return {
     getPathsBySlug,
     getPropsBySlug,
-    getMainPostListProps,
   };
 };
 

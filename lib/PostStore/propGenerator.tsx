@@ -37,6 +37,12 @@ interface PropMap<T> {
   [key: string]: T;
 }
 
+export type PropType<K extends keyof PropList> = PropList[K] extends PropMap<
+  infer R
+>
+  ? R
+  : never;
+
 export interface PropList {
   global: GlobalProp;
   category: PropMap<PostListProp>;
