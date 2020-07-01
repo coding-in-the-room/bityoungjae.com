@@ -18,6 +18,7 @@ export interface PostData {
   tags: string[];
   html: string;
   date: number;
+  isPublished: boolean;
   categories: string[];
   prevPost: string;
   nextPost: string;
@@ -28,7 +29,7 @@ export const parsePost = async (filePath: string, slug: string) => {
   const rawText = await fsPromise.readFile(filePath);
 
   const {
-    data: { title = '', date, tags = [] },
+    data: { title = '', date, tags = [], published = true },
     content = '',
   } = matter(rawText);
 
@@ -40,6 +41,7 @@ export const parsePost = async (filePath: string, slug: string) => {
     tags: (tags as string[]).map((tag) => slugify(tag)),
     date: (date as Date).valueOf(),
     html,
+    isPublished: published ? true : false,
     categories: [],
     prevPost: '',
     nextPost: '',
