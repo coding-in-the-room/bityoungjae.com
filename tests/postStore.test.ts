@@ -23,6 +23,8 @@ test('getCategoriesPaths', async () => {
     ['react', '리액트-핵심정리', 'page', '1'],
     ['redux'],
     ['redux', 'page', '1'],
+    ['테스트용-게시물들'],
+    ['테스트용-게시물들', 'page', '1'],
   ];
 
   expect(isEqual(target, categories)).toBe(true);
@@ -35,12 +37,15 @@ test('getPostsByCategories', async () => {
     '특별-시리즈',
   ]);
 
-  expect(posts[0].slug).toBe('자바스크립트의-모든-것-1탄');
+  expect(posts[0].slug).toBe('2020-06-22-자바스크립트의-모든-것-1탄');
 });
 
 test('getPostsBySlug', async () => {
   const store = await getStore({ postDir: testPath });
-  const post = getPostBySlug(store.rootNode, '자바스크립트의-모든-것-1탄');
+  const post = getPostBySlug(
+    store.rootNode,
+    '2020-06-22-자바스크립트의-모든-것-1탄',
+  );
 
   expect(post?.postData?.title).toBe('자바스크립트의 모든 거엇!');
 });
