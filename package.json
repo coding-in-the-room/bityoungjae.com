@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "date-fns": "^2.14.0",
     "gray-matter": "^4.0.2",
     "next": "^9.4.5-canary.17",
     "prismjs": "^1.20.0",
