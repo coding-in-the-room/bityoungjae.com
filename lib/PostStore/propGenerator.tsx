@@ -16,8 +16,9 @@ import {
   getPostBySlug,
 } from './common';
 
-export interface PageProp {
+export interface PostListProp {
   count: number;
+  currentPage: number;
   totalPage: number;
   postList: PostData[];
 }
@@ -38,9 +39,9 @@ interface PropMap<T> {
 
 export interface PropList {
   global: GlobalProp;
-  category: PropMap<PageProp>;
-  page: PropMap<PageProp>;
-  tag: PropMap<PageProp>;
+  category: PropMap<PostListProp>;
+  page: PropMap<PostListProp>;
+  tag: PropMap<PostListProp>;
   post: PropMap<PostProp>;
 }
 
@@ -109,9 +110,9 @@ interface getPropProps {
   perPage?: number;
 }
 
-const makePropList = (options: getPropProps): PropMap<PageProp> => {
+const makePropList = (options: getPropProps): PropMap<PostListProp> => {
   const { rootNode, pathList, slugName, perPage, getPostsFn } = options;
-  const propMap: PropMap<PageProp> = {};
+  const propMap: PropMap<PostListProp> = {};
 
   for (const path of pathList) {
     const slug = path.params[slugName] as string[];
@@ -120,22 +121,15 @@ const makePropList = (options: getPropProps): PropMap<PageProp> => {
     const posts = getPostsFn(rootNode, trimmedSlug);
     const totalPage = getTotalPage(posts.length, perPage);
 
-    let count: number;
-    let postList: PostData[];
+    const currentPage = isPage ? getPageNum(slug) : 1;
+    const postList = getPostsByPage(posts, currentPage, perPage).map(
+      (node) => node.postData,
+    );
+    const count = postList.length;
 
-    if (isPage) {
-      const currentPage = getPageNum(slug);
-      postList = getPostsByPage(posts, currentPage, perPage).map(
-        (node) => node.postData,
-      );
-      count = postList.length;
-    } else {
-      count = posts.length;
-      postList = posts.map((node) => node.postData);
-    }
-
-    const prop: PageProp = {
+    const prop: PostListProp = {
       count,
+      currentPage,
       postList,
       totalPage,
     };
