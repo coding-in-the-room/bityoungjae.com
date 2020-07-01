@@ -1,0 +1,3 @@
+[submodule "packages/PostStore"]
+	path = packages/PostStore
+	url = https://github.com/BitYoungjae/PostStore.git
